@@ -1,0 +1,127 @@
+<html>
+<!--[if IE]><script type="text/javascript" src="js\excanvas.js"></script><![endif]-->
+<script>
+	function addWater()
+	{
+		if (waterCount < maxWaterCount)
+			waterCount++;
+		if (waterCount == maxWaterCount)
+			waterColor = "rgb(0,200,0)";
+		else
+			waterColor = window.normalWater;
+		draw();
+	}
+	
+	function resetWater()
+	{
+		waterCount = 0;
+		waterColor = window.normalWater;
+		draw();
+		setNeededTimeout();
+	}
+	
+	function initSettings()
+	{
+	    document.body.style.width = 60;
+		document.body.style.height= 140;
+		document.body.style.margin=0;
+		
+		window.timePoints = ["08:00", "10:00", "11:30", "13:00", "14:00", "15:00", 
+			"17:00", "18:30", "21:30", "22:30"];
+		window.resetTime = "00:01";
+		window.waterCount = 0;
+		window.maxWaterCount = 10;
+		window.canvasWidth = 60;
+		window.canvasHeight = 100;
+		window.canvasMargin = 5;
+		window.waterMargin = 5;
+		window.normalWater = "rgb(0,200,200)";
+		window.waterColor = window.normalWater;
+		window.waitedIndex = -1;
+	}
+	
+	function setReminderTimeout()
+	{
+		var d = new Date();
+		var curTime = Date.parse('01/01/2012 ' + d.getHours() + ":" + d.getMinutes());
+		for (var i = 0; i < timePoints.length; i++)
+		{
+			var t = Date.parse('01/01/2012 ' + timePoints[i]);
+			if (t > curTime)
+			{
+				setTimeout("setRemindMode()", t - curTime);
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	function setResetTimeout()
+	{
+		var d = new Date();
+		var curTime = Date.parse('01/02/2012 ' + d.getHours() + ":" + d.getMinutes());
+		window.timeUntilNextEvent = Date.parse('01/01/2012 ' + window.resetTime) - curTime;
+		setTimeout("resetWater()", timeUntilNextEvent);
+	}
+	
+	function setNeededTimeout()
+	{
+		if (!setReminderTimeout())
+			setResetTimeout();
+	}
+	   
+	function init() {
+		initSettings();
+		setNeededTimeout();
+		
+		document.getElementById("btnDrink").onclick = function() {
+			addWater();
+		}
+		draw();
+	}
+	
+	function setRemindMode()
+	{
+		window.waterColor = "rgb(200,0,0)";
+		draw();
+		setNeededTimeout();
+	}
+	  
+    function draw() {
+	    
+		var label = document.getElementById("lblProgress");
+		label.innerHTML = waterCount + " / " + maxWaterCount;
+		var canvas = document.getElementById("canvas");
+		if (canvas.getContext) {
+			var ctx = canvas.getContext("2d");
+
+			ctx.LineWidth = 4;
+			ctx.beginPath();
+		
+			ctx.moveTo(canvasMargin, canvasMargin);
+			ctx.lineTo(canvasMargin, canvasHeight - canvasMargin);
+			ctx.lineTo(canvasWidth - canvasMargin, canvasHeight - canvasMargin);
+			ctx.lineTo(canvasWidth - canvasMargin, canvasMargin);
+			ctx.stroke();
+			
+			var step = (canvasHeight - canvasMargin * 2 - waterMargin) / maxWaterCount;
+			var left = canvasMargin + 1;
+			var top = canvasHeight - canvasMargin - waterCount * step;
+			var width = canvasWidth - canvasMargin * 2 - 2;
+			var height = waterCount * step - 1;
+			ctx.fillStyle = "rgb(255,255,255)";
+			ctx.fillRect(left, canvasMargin + waterMargin, width, 10 * step - 1);
+			ctx.fillStyle = waterColor;
+			ctx.fillRect(left, top, width, height);
+		}
+    }
+	  
+</script>
+<body onload="init();">
+    <div id="myDiv" >
+		<div style="text-align: center;"><span><label id="lblProgress" width="60" ></label></span></div>
+		<div><span><canvas id="canvas" width="60" height="100" onclick="resetWater()"></canvas></span></div>
+		<div><span><img id="btnDrink" src="img\btnDrink.png" width="60" ></span></div>	
+    </div>
+</body>
+</html>
