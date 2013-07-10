@@ -3,21 +3,31 @@
 <script>
 	function addWater()
 	{
-		if (waterCount < maxWaterCount)
-			waterCount++;
-		if (waterCount == maxWaterCount)
-			waterColor = "rgb(0,200,0)";
-		else
-			waterColor = window.normalWater;
-		draw();
+	if (waterCount < maxWaterCount)
+	waterCount++;
+	if (waterCount == maxWaterCount)
+	{
+	waterColor = "rgb(40,210,255)";
+	var reset=document.getElementById("btnReset");
+	reset.style.display="block";
+	var drink=document.getElementById("btnDrink");
+	drink.style.display="none";
+	
+	}else
+	waterColor = window.normalWater;
+	draw();
 	}
 	
 	function resetWater()
 	{
-		waterCount = 0;
-		waterColor = window.normalWater;
-		draw();
-		setNeededTimeout();
+	waterCount = 0;
+	waterColor = window.normalWater;
+	var reset=document.getElementById("btnReset");
+	reset.style.display="none";
+	var drink=document.getElementById("btnDrink");
+	drink.style.display="block";
+	draw();
+	setNeededTimeout();
 	}
 	
 	function initSettings()
@@ -35,7 +45,7 @@
 		window.canvasHeight = 100;
 		window.canvasMargin = 5;
 		window.waterMargin = 5;
-		window.normalWater = "rgb(0,200,200)";
+		window.normalWater = "rgb(40,210,255)";
 		window.waterColor = window.normalWater;
 		window.waitedIndex = -1;
 	}
@@ -121,7 +131,8 @@
     <div id="myDiv" >
 		<div style="text-align: center;"><span><label id="lblProgress" width="60" ></label></span></div>
 		<div><span><canvas id="canvas" width="60" height="100" onclick="resetWater()"></canvas></span></div>
-		<div><span><img id="btnDrink" src="img\btnDrink.png" width="60" ></span></div>	
+		<div><span><img id="btnDrink" src="img\btnDrink.png" width="60" ></span></div>
+		<div><span><img id="btnReset" src="img\btnReset.png" width="60" onclick="resetWater()" style="display:none;" ></span></div>
     </div>
 </body>
 </html>
