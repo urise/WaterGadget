@@ -32,7 +32,7 @@
 	
 	function initSettings()
 	{
-	    document.body.style.width = 60;
+	    document.body.style.width = 80;
 		document.body.style.height= 140;
 		document.body.style.margin=0;
 		
@@ -41,7 +41,7 @@
 		window.resetTime = "00:01";
 		window.waterCount = 0;
 		window.maxWaterCount = 10;
-		window.canvasWidth = 60;
+		window.canvasWidth = 80;
 		window.canvasHeight = 100;
 		window.canvasMargin = 5;
 		window.waterMargin = 5;
@@ -119,7 +119,13 @@
 			var top = canvasHeight - canvasMargin - waterCount * step;
 			var width = canvasWidth - canvasMargin * 2 - 2;
 			var height = waterCount * step - 1;
-			ctx.fillStyle = "rgb(255,255,255)";
+			
+			var my_gradient=ctx.createLinearGradient(0,0,0,170);
+			my_gradient.addColorStop(0,"white");
+			my_gradient.addColorStop(1,'#328EFF');
+			ctx.fillStyle=my_gradient;
+			
+			//ctx.fillStyle = "rgb(255,255,255)";
 			ctx.fillRect(left, canvasMargin + waterMargin, width, 10 * step - 1);
 			ctx.fillStyle = waterColor;
 			ctx.fillRect(left, top, width, height);
@@ -130,9 +136,9 @@
 <body onload="init();">
     <div id="myDiv" >
 		<div style="text-align: center;"><span><label id="lblProgress" width="60" ></label></span></div>
-		<div><span><canvas id="canvas" width="60" height="100" onclick="resetWater()"></canvas></span></div>
-		<div><span><img id="btnDrink" src="img\btnDrink.png" width="60" ></span></div>
-		<div><span><img id="btnReset" src="img\btnReset.png" width="60" onclick="resetWater()" style="display:none;" ></span></div>
+		<div><span><canvas id="canvas" width="80" height="100" onclick="resetWater()"></canvas></span></div>
+		<div><span><img id="btnDrink" src="img\btnDrink_2.png" width="80" ></span></div>
+		<div><span><img id="btnReset" src="img\btnReset.png" width="80" onclick="resetWater()" style="display:none;" ></span></div>
     </div>
 </body>
 </html>
